@@ -95,13 +95,12 @@ namespace AIChat
             if (string.IsNullOrEmpty(aiForm.tbOllamaPath.Text))
             {
                 await Ollama.ShowAssistantText("Ollama.exe path not found, make sure downloaded ollama path is in the Ollama path text box.", this);
+                
                 return;
             }
             string chatmessage = chatTextbox.Text;
-
             IChatModel chatModel = null;
             TextChatModel textModel = null;
-
             //Each IChatModel is specifically built for a single purpose. For that reason, if you want to display a text item AND and image, you'd make two IChatModels for
             //their respective purposes. AttachmentChatModel and ImageChatModel, however, can really be used interchangeably.
             if (chatbox_info.Attachment != null && chatbox_info.AttachmentType.Contains("image"))

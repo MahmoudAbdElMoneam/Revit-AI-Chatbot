@@ -110,7 +110,7 @@ namespace AIChat
             {
                 textModel = new TextChatModel()
                 {
-                    Author = Ollama.ollama.SelectedModel,
+                    Author = Ollama.ollama!=null? Ollama.ollama.SelectedModel:"No AI Model Found",
                     Inbound = true,
                     Body = "",
                     Read = true,
@@ -323,9 +323,9 @@ namespace AIChat
 
                 // Optional: You can read the output/error streams for logging or debugging
                 ollamaProcess.OutputDataReceived += (sender, e) => form.toolStripStatusLabel1.Text = e.Data;
-                ollamaProcess.ErrorDataReceived += (sender, e) => form.toolStripStatusLabel1.Text = $"ERROR: {e.Data}";
+                //ollamaProcess.ErrorDataReceived += (sender, e) => form.toolStripStatusLabel1.Text = $"ERROR: {e.Data}";
                 ollamaProcess.BeginOutputReadLine();
-                ollamaProcess.BeginErrorReadLine();
+                //ollamaProcess.BeginErrorReadLine();
 
                 //// Keep the main application running while Ollama serves
                 //Console.WriteLine("Press any key to stop the Ollama service and exit.");

@@ -1,8 +1,9 @@
-﻿using Autodesk.Revit.UI;
+﻿using AIChat;
+using Autodesk.Revit.DB;
+using Autodesk.Revit.UI;
 using Newtonsoft.Json;
 using OllamaSharp;
 using OllamaSharp.Models;
-using AIChat;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,6 +15,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Form = System.Windows.Forms.Form;
 
 namespace AIChat
 {
@@ -45,7 +47,40 @@ namespace AIChat
             if (!Directory.Exists(settingsFolder))
                 Directory.CreateDirectory(settingsFolder);
             settingsPath = settingsFolder + "ollama.json";
-			ReadSettings();
+
+
+            if (tbOllamaPath.Text == "")
+            {
+                string localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                string ollamaInstallPath = Path.Combine(localAppData, "Programs", "Ollama");
+                // You can also attempt to verify if 'ollama.exe' exists in this directory
+                string ollamaExecutablePath = Path.Combine(ollamaInstallPath, "ollama.exe");
+                if (System.IO.File.Exists(ollamaExecutablePath))
+                {
+                    tbOllamaPath.Text = ollamaInstallPath+"\\";
+                }
+                else
+                {
+                    string pathVariable = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.User);
+                    if (string.IsNullOrEmpty(pathVariable))
+                    {
+                        pathVariable = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.Machine);
+                    }
+                    if (!string.IsNullOrEmpty(pathVariable))
+                    {
+                        string[] paths = pathVariable.Split(';');
+                        foreach (string path in paths)
+                        {
+                            if (path.Contains("Ollama") && System.IO.File.Exists(System.IO.Path.Combine(path, "ollama.exe")))
+                            {
+                                tbOllamaPath.Text = path+"\\";
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            ReadSettings();
 		}
 		// Make Load event async
 		private async Task startOllama()
@@ -129,10 +164,15 @@ namespace AIChat
 		int panel1Width = 300;
         private void btnCollapse_Click(object sender, EventArgs e)
         {
-			if (splitContainer1.Panel1.Width > 0)
-				splitContainer1.Panel1.Width = 0;
-			else
-				splitContainer1.Panel1.Width = panel1Width;
+            if (!splitContainer1.Panel1Collapsed)
+            {
+                splitContainer1.Panel1Collapsed = true;
+            }
+            else
+            {
+                splitContainer1.SplitterDistance = panel1Width;
+                splitContainer1.Panel1Collapsed = false;
+            }
         }
     }
 }

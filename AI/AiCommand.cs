@@ -168,6 +168,7 @@ namespace AIChat
                     AiHandler = new AiExternalEventHandler(executor);
                     AiExternalEvent = ExternalEvent.Create(AiHandler);
                     AiChatForm form = new AiChatForm(app);
+                    
                     // Webview initialisation handler, called when control instantiated and ready
                     form.Show();
                     errors = "";
