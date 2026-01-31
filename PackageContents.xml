@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ApplicationPackage SchemaVersion="1.0" 
+					AutodeskProduct="Revit"
+					ProductType="Application"
+					Name="AIChat"
+					AppVersion="1.0.0" 
+					Description="AIChat"
+					Author="Mahmoud Osman" Icon="./Contents/2024/Resources/icon.png"
+					ProductCode="{CF2BF153-48A3-4603-8365-AEA6CF12855F}"
+					UpgradeCode="{EA2ADBBF-565F-43E8-BED8-0BCF10F11A75}"
+					FriendlyVersion="1.0.0"
+					SupportedLocales="Enu" AppNameSpace="appstore.exchange.autodesk.com">
+	<CompanyDetails Name="Mahmoud Osman"
+					Url="https://www.turnerandtownsend.com/"
+					Email="mahmoudabdelmoneam@outlook.com" Phone=" " />
+	<RuntimeRequirements OS="Win32|Win64" Platform="Revit|Revit Architecture|Revit Structure|Revit MEP"
+						 SeriesMin="R2020" SeriesMax="R2026" />
+	<Components Description="2020 parts">
+		<RuntimeRequirements OS="Win32|Win64" Platform="Revit|Revit Architecture|Revit Structure|Revit MEP"
+							 SeriesMin="R2020" SeriesMax="R2020" />
+		<ComponentEntry AppName="AIChat" Version="1.0.0"
+						ModuleName="./Contents/2020/AIChat.addin" AppDescription="AIChat" />
+	</Components>
+		<Components Description="2021 parts">
+		<RuntimeRequirements OS="Win32|Win64" Platform="Revit|Revit Architecture|Revit Structure|Revit MEP"
+							 SeriesMin="R2021" SeriesMax="R2021" />
+		<ComponentEntry AppName="AIChat" Version="1.0.0" 
+						ModuleName="./Contents/2021/AIChat.addin" AppDescription="AIChat" />
+	</Components>
+	<Components Description="2022 parts">
+		<RuntimeRequirements OS="Win32|Win64" Platform="Revit|Revit Architecture|Revit Structure|Revit MEP"
+							 SeriesMin="R2022" SeriesMax="R2022" />
+		<ComponentEntry AppName="AIChat" Version="1.0.0"
+						ModuleName="./Contents/2022/AIChat.addin" AppDescription="AIChat" />
+	</Components>
+	<Components Description="2023 parts">
+		<RuntimeRequirements OS="Win32|Win64" Platform="Revit|Revit Architecture|Revit Structure|Revit MEP"
+							 SeriesMin="R2023" SeriesMax="R2023" />
+		<ComponentEntry AppName="AIChat" Version="1.0.0" 
+						ModuleName="./Contents/2023/AIChat.addin" AppDescription="AIChat" />
+	</Components>
+	<Components Description="2024 parts">
+		<RuntimeRequirements OS="Win32|Win64" Platform="Revit|Revit Architecture|Revit Structure|Revit MEP"
+							 SeriesMin="R2024" SeriesMax="R2024" />
+		<ComponentEntry AppName="AIChat" Version="1.0.0"
+						ModuleName="./Contents/2024/AIChat.addin" AppDescription="AIChat" />
+	</Components>
+	<Components Description="2025 parts">
+		<RuntimeRequirements OS="Win32|Win64" Platform="Revit|Revit Architecture|Revit Structure|Revit MEP"
+							 SeriesMin="R2025" SeriesMax="R2025" />
+		<ComponentEntry AppName="AIChat" Version="1.0.0"
+						ModuleName="./Contents/2025/AIChat.addin" AppDescription="AIChat" />		
+	</Components>
+	<Components Description="2026 parts">
+		<RuntimeRequirements OS="Win32|Win64" Platform="Revit|Revit Architecture|Revit Structure|Revit MEP"
+							 SeriesMin="R2026" SeriesMax="R2026" />
+		<ComponentEntry AppName="AIChat" Version="1.0.0"
+						ModuleName="./Contents/2026/AIChat.addin" AppDescription="AIChat" />
+	</Components>
+</ApplicationPackage>

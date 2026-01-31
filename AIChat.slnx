@@ -1,0 +1,18 @@
+<Solution>
+  <Configurations>
+    <BuildType Name="Debug" />
+    <BuildType Name="R2020" />
+    <BuildType Name="R2021" />
+    <BuildType Name="R2022" />
+    <BuildType Name="R2023" />
+    <BuildType Name="R2024" />
+    <BuildType Name="R2025" />
+    <BuildType Name="R2026" />
+    <BuildType Name="Release" />
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+  </Configurations>
+  <Project Path="AIChat.csproj" Id="9936e5a9-4779-4bf1-8416-a90a3e715401">
+    <Platform Solution="*|x64" Project="x64" />
+  </Project>
+</Solution>

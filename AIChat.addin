@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+	<AddIn Type="Application">
+		<Name>AI Chat</Name>
+		<Assembly>AIChat.dll</Assembly>
+		<FullClassName>AIChat.AiApp</FullClassName>
+		<ClientId>DE8ABB95-6554-4B39-95A5-B6D9EC3E8652</ClientId>
+		<VendorId>Mahmoud Osman</VendorId>
+		<VendorDescription>Mahmoud Osman</VendorDescription>
+	</AddIn>
+</RevitAddIns>
+
