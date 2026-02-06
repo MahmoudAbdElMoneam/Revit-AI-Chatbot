@@ -109,11 +109,18 @@ namespace AIChat
     [Transaction(TransactionMode.Manual)]
     public class AiCommand : IExternalCommand
     {
+        public static ExternalEvent AiExternalEvent;
+        public static AiExternalEventHandler AiHandler;
+        public static AiScriptJob CurrentJob = new AiScriptJob();
         public Result Execute(
           ExternalCommandData commandData,
           ref string message,
           ElementSet elements)
         {
+            var executor = new RevitCodeExecutor();
+            AiHandler = new AiExternalEventHandler(executor);
+            AiExternalEvent = ExternalEvent.Create(AiHandler);
+
             UIApplication uiapp = commandData.Application;
             UIDocument uidoc = uiapp.ActiveUIDocument;
 
@@ -121,6 +128,8 @@ namespace AIChat
             RevitTask.Initialize(uiapp);
             ButtonAiChatCommand toRun = new ButtonAiChatCommand();
             toRun.uiApp = uiapp;
+            toRun.subAiExternalEvent = AiExternalEvent;
+            toRun.subAiHandler = AiHandler;
             toRun.Execute(this);
             //AiChatForm form = new AiChatForm(uiapp);
             //form.Show();
@@ -147,10 +156,11 @@ namespace AIChat
         public string errors = "";
         public string settingsFolder = "";
         public Dictionary<string, string> settings = [];
-
-        public static ExternalEvent AiExternalEvent;
-        public static AiExternalEventHandler AiHandler;
-        public static AiScriptJob CurrentJob = new AiScriptJob();
+        public ExternalEvent subAiExternalEvent;
+        public AiExternalEventHandler subAiHandler;
+        //public static ExternalEvent AiExternalEvent;
+        //public static AiExternalEventHandler AiHandler;
+        //public static AiScriptJob CurrentJob = new AiScriptJob();
         public UIApplication uiApp { get; set; }
 
         public bool CanExecute(object parameter)
@@ -164,10 +174,10 @@ namespace AIChat
             await RevitTask.RunAsync(
                 async app =>
                 {
-                    var executor = new RevitCodeExecutor();
-                    AiHandler = new AiExternalEventHandler(executor);
-                    AiExternalEvent = ExternalEvent.Create(AiHandler);
-                    AiChatForm form = new AiChatForm(app);
+                    //var executor = new RevitCodeExecutor();
+                    //AiHandler = new AiExternalEventHandler(executor);
+                    //AiExternalEvent = ExternalEvent.Create(AiHandler);
+                    AiChatForm form = new AiChatForm(app, subAiExternalEvent, subAiHandler);
                     
                     // Webview initialisation handler, called when control instantiated and ready
                     form.Show();
@@ -175,5 +185,12 @@ namespace AIChat
                 });
 
         }
+    }
+    // Helper class to wrap the Revit window handle
+    public class JtWindowHandle : IWin32Window
+    {
+        private IntPtr _hwnd;
+        public JtWindowHandle(IntPtr h) { _hwnd = h; }
+        public IntPtr Handle { get { return _hwnd; } }
     }
 }

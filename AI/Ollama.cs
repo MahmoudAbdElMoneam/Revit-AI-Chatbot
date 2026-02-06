@@ -38,33 +38,77 @@ namespace AIChat
         /// <returns></returns>
         public static async Task BeginOllama(AiChatForm formInstance)
         {
-
             form = formInstance;
+            form.canClose = false;
+
+            form.UpdateStatus("Starting Ollama...", 0);
             await StartOllama();
+            form.canClose = true;
         }
         public static async Task<IEnumerable<Model>> StartOllama()
         {
             // set up the client
             IEnumerable<Model> availableModels = await InitializeClient();
+
             string[] availableModelNames = availableModels.Select(x => x.Name).ToArray();
             if (availableModelNames.Count() > 0)
             {
-                form.cbAIModels.Items.AddRange(availableModelNames);
-                form.cbAIModels.SelectedText = availableModelNames.FirstOrDefault();
-                selectedAIModel = availableModelNames.FirstOrDefault();
+                if (form.cbAIModels.Items.Count > 0 && form.cbAIModels.SelectedItem != null &&
+                    form.cbAIModels.SelectedItem.ToString() != "")
+                {
+                    selectedAIModel = form.cbAIModels.SelectedItem.ToString();
+                }
+                else
+                {
+                    if (form.cbAIModels.Items.Count > 0)
+                        form.cbAIModels.Items.Clear();
+                    if(form.cbAIModels.DataSource!=null)
+                        form.cbAIModels.DataSource = null;                    
+                    if (form.cbAIModels.InvokeRequired)
+                    {
+                        form.cbAIModels.Invoke((MethodInvoker)delegate
+                            {
+                                form.cbAIModels.BeginUpdate();
+                                form.cbAIModels.Items.AddRange(availableModelNames);
+
+                                if (!form.cbAIModels.Items.Contains("llama3.2:3b"))
+                                    form.cbAIModels.Items.Add("llama3.2:3b");
+                                if (!form.cbAIModels.Items.Contains("danielsheep/Qwen3-Coder-30B-A3B-Instruct-1M-Unsloth:UD-Q4_K_XL"))
+                                    form.cbAIModels.Items.Add("danielsheep/Qwen3-Coder-30B-A3B-Instruct-1M-Unsloth:UD-Q4_K_XL");
+                                form.cbAIModels.SelectedText = availableModelNames.FirstOrDefault();
+
+
+                                form.cbAIModels.EndUpdate();
+                            });
+
+                    }
+                    else
+                    {
+                        form.cbAIModels.Items.AddRange(availableModelNames);
+                        //form.cbAIModels.Items.AddRange(availableModelNames.Cast<object>().ToArray());
+                        if (!form.cbAIModels.Items.Contains("llama3.2:3b"))
+                            form.cbAIModels.Items.Add("llama3.2:3b");
+                        if (!form.cbAIModels.Items.Contains("danielsheep/Qwen3-Coder-30B-A3B-Instruct-1M-Unsloth:UD-Q4_K_XL"))
+                            form.cbAIModels.Items.Add("danielsheep/Qwen3-Coder-30B-A3B-Instruct-1M-Unsloth:UD-Q4_K_XL");
+                        form.cbAIModels.SelectedIndex = 0;
+                    }
+                    selectedAIModel = availableModelNames.FirstOrDefault();
+                }
                 ollama.SelectedModel = selectedAIModel;
                 ollama.Config.Model = selectedAIModel;
 
                 IEnumerable<RunningModel> runningModels = await ollama.ListRunningModelsAsync();
                 if (runningModels.Count() == 0)
                 {
-
+                    if (selectedAIModel == "")
+                        selectedAIModel = "llama3.2:3b";
                     await OllamaPullModel(selectedAIModel);
                     //OllamaCommand($"run {selectedAIModel}");
                     runningModels = await ollama.ListRunningModelsAsync();
 
                 }
             }
+            form.UpdateStatus("Ollama started, send a message.", 100);
             return availableModels;
         }
         private static async Task<IEnumerable<Model>> InitializeClient()
@@ -80,6 +124,7 @@ namespace AIChat
             {
                 OllamaCommand("serve");
                 bool ollamaRunning = false;
+
                 while (!ollamaRunning)
                 {
                     try
@@ -100,17 +145,21 @@ namespace AIChat
         private static async Task OllamaPullModel(string modelName)
         {
             await foreach (var status in ollama.PullModelAsync(modelName))
-                Console.WriteLine($"{status.Percent}% {status.Status}");
-
+            {
+                form.UpdateStatus($"Downloading Model: {modelName} - {Math.Round(status.Percent)}% {status.Status}", (int)Math.Round(status.Percent));
+            }
         }
         public static async Task ShowAssistantText(string text, Chatbox chatBox)
         {
+            form.canClose = false;
+            form.UpdateStatus("Status...", 0);
+
             TextChatModel textModel = new TextChatModel();
             if (chatBox != null)
             {
                 textModel = new TextChatModel()
                 {
-                    Author = Ollama.ollama!=null? Ollama.ollama.SelectedModel:"No AI Model Found",
+                    Author = Ollama.ollama != null ? Ollama.ollama.SelectedModel : "No AI Model Found",
                     Inbound = true,
                     Body = "",
                     Read = true,
@@ -127,13 +176,17 @@ namespace AIChat
                 string formattedText = Markdig.Markdown.ToHtml(text, pipeline);
                 await Ollama.UpdateChat(formattedText, chatItemPanel, chatText);
             }
+            form.canClose = true;
         }
 
         public static List<OllamaSharp.Models.Chat.Message> previousMessages = new List<OllamaSharp.Models.Chat.Message>();
         public static async Task<string> GetAIResponse(string prompt, Chatbox chatBox, bool updateUI = true)
         {
+            form.canClose = false;
+            form.UpdateStatus("Responding...", 0);
+
             var chat = new Chat(ollama);
-            if(ollama.SelectedModel.Contains("oss"))
+            if (ollama.SelectedModel.Contains("oss"))
                 chat.Think = true;
             if (previousMessages != null)
                 chat.Messages = previousMessages;
@@ -166,10 +219,27 @@ namespace AIChat
                 }
 
                 // Configure the pipeline with all advanced extensions active
-                var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().UseColorCode().UseEmojiAndSmiley(enableSmileys: true).UseAutoIdentifiers()
-                    .UseEmphasisExtras().UseAutoLinks().UseCitations().UseDefinitionLists().UseDiagrams()
-                    .UseFigures().UseGridTables().UseListExtras().UseDefinitionLists().UsePipeTables().UseTaskLists().UseCitations()
-                    .UseSoftlineBreakAsHardlineBreak().UseCustomContainers().UseGenericAttributes().UseBootstrap().Build();
+                var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions()
+                    .UseColorCode()
+                    //.UseEmojiAndSmiley(enableSmileys: true)
+                    .UseAutoIdentifiers()
+                    .UseEmphasisExtras()
+                    .UseAutoLinks()
+                    .UseCitations()
+                    .UseDiagrams()
+                    .UseFigures()
+                    .UseGridTables()
+                    //.UsePipeTables()
+                    .UseListExtras()
+                    .UseDefinitionLists()
+                    .UseTaskLists()
+                    .UseCitations()
+                    .UseSoftlineBreakAsHardlineBreak()
+                    .UseCustomContainers()
+                    .UseGenericAttributes()
+                    .UseAutoLinks()
+                    //.UseBootstrap()
+                    .Build();
                 //var result = Markdown.ToHtml("This is a text with some *emphasis*", pipeline);
                 bool foundCode = false;
                 int itteration = 0;
@@ -183,8 +253,6 @@ namespace AIChat
                     // Iterate over the stream and append to UI
                     await foreach (string answerToken in responseTask)
                     {
-                        form.statusStrip1.Text = $"Generating Response.";
-
                         //if (textModel.InvokeRequired)
                         //{
                         //    // If not on the UI thread, use Invoke to marshal the call
@@ -235,6 +303,8 @@ namespace AIChat
                             await UpdateChat($"\nError: {ex.Message}", chatItemPanel, chatText);
                     });
                 }
+                form.UpdateStatus("Status", 0);
+                form.canClose = true;
                 return fullResponse;
             }
         }
@@ -251,7 +321,7 @@ namespace AIChat
                         //WebView2 chatControl = (chatText as WebView2);
                         //chatControl.NavigateToString(chatItem.AddHtmlStyles(newMessage));
 
-                            textModel.Body = newMessage;
+                        textModel.Body = newMessage;
                         chatText.Text = newMessage;
                         //chatControl.NavigationCompleted += (sender, args) => {
                         //    // Content is fully loaded
@@ -344,7 +414,7 @@ namespace AIChat
                 //    Console.WriteLine("\nOllama service stopped.");
                 //}
             }
-        }        
+        }
 
     }
 

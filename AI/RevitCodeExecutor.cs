@@ -5,8 +5,8 @@ using DocumentFormat.OpenXml.Spreadsheet;
 using Markdig;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Newtonsoft.Json;
 using Revit.Async;
-
 
 //using Microsoft.CodeAnalysis;
 //using Microsoft.CodeAnalysis.CSharp;
@@ -16,8 +16,10 @@ using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using Document = Autodesk.Revit.DB.Document;
 
 namespace AIChat.AI
@@ -38,8 +40,10 @@ namespace AIChat.AI
                 aiForm.cbInteractRevit.Checked = false;
                 aiForm.cbRetrieveAndReAsk.Checked = false;
                 await Ollama.ShowAssistantText("No opened Revit Models found, unchecked the setting for you, enable it when u open a file. Please repeat your message.", chatBox);
+                aiForm.UpdateStatus("No Revit File Opened...", 0);
                 return;
             }
+
             Document doc = uiDoc.Document;
             // Example: selected elements
             var selIds = uiDoc.Selection.GetElementIds();
@@ -56,58 +60,15 @@ namespace AIChat.AI
             string systemPrompt = "";
             if (!aiForm.cbRetrieveAndReAsk.Checked)
             {
-                systemPrompt = @$"You are a Revit assistant running inside a Revit {uiApp.Application.VersionNumber} add-in.
-                            You can ask to run tools using C# as a Revit macro code to fill code inside a Run function, 
-                            Do not declare a class or method. Do not use top-level statements,                            
-                            don't suggest any code that would require additional references or out of Revit {uiApp.Application.VersionNumber} API,
-                            always return a value. Don't declare using references clauses for any dll, as u run inside an already build function.
-                            Inside the existing function the following are already defined, never write any of this 2 lines:
-                            UIDocument uidoc = app.ActiveUIDocument;
-                            Document doc = uidoc.Document;
-                            To assign a Line to Curve, use Curve curve = line;
-                            To model a wall use this code in the same order Wall.Create(doc, curve, defaultWallType.Id, wallHeight, double offset=0, bool flip=false, bool structural=false).
-
-                            Use the already declared uidoc and doc instead of Application.ActiveUIDocument.
-                            Don't use BuiltInParameter to retrieve parameter values. Never use DisplayUnitType, ParameterType, StringBuilder, only use System, System.Linq, System.Collections.Generic, 
-                            Autodesk.Revit.DB, Autodesk.Revit.UI.
-                            For units, ignore uints, never use UnitTypeId, instead treat everything as string..
-                            Don't use var, declare the actual objects types.
-                            To get ElementId, don't use .IntegerValue, instead use elem.Id, or parameter.AsElementId().
-                            To retrieve element parameter use element.LookupParameter(ParameterName), no ToList(), or First() are required.
-                            To convert type 'Autodesk.Revit.DB.ParameterSet' to 'System.Collections.Generic.ICollection<Autodesk.Revit.DB.Parameter>, you must use a foreach loop.
-                            Cast all Collections ToList() as they generate errors, except collection sets, like Parameters.
-                            Don't use weird characters such as 》、《.
-                            return string markdown responses if needed, and code without declaring top functions, code should be within:
-                            ```csharp
-                            ```";
+                
+                systemPrompt = aiForm.retrieveAndReAskPrompt;
                 aiDataFile = "";
             }
             if (aiForm.cbRetrieveAndReAsk.Checked)
             {
                 aiDataFile = aiForm.settingsFolder + "AiData.txt";
-                systemPrompt =
-                        @$"You are a Revit assistant running inside a Revit {uiApp.Application.VersionNumber} add-in in 2 steps, when a user asks a question, generate the necessery code to read/implement the requirement from the opened Revit Model,
-                        by reading data from the Revit model, let ur code return the data JSON as a string, don't show window/dialog, return JSON.ToString(),
-                            Secondly, I will send this data to u with the user query to think how to respond to the user using this data.
-                            For the first part you can run tools using C# as a Revit macro code that will fill code inside a Run function, 
-                            Do not declare a class or method. Do not use top-level statements,
-                            don't suggest any code that would require additional references or out of Revit {uiApp.Application.VersionNumber} API,
-                            Inside Run the following are already defined:
-                            UIDocument uidoc = app.ActiveUIDocument;
-                            Document doc = uidoc.Document;
-                            Use the already declared uidoc and doc instead of Application.ActiveUIDocument.
-                            Don't use BuiltInParameter to retrieve parameter values. Never use DisplayUnitType, ParameterType, StringBuilder, only use System, System.Linq, System.Collections.Generic, Autodesk.Revit.DB, Autodesk.Revit.UI.
-                            For units, ignore uints, never use UnitTypeId, instead treat everything as string..
-                            always return a value. Don't add using for any dll, as u run inside an already build function.
-                            Don't use var, declare the actual objects types.
-                            To get ElementId, don't use .IntegerValue, instead use elem.Id, or parameter.AsElementId().
-                            To retrieve element parameter use element.LookupParameter(ParameterName), no ToList(), or First() are required.
-                            To convert type 'Autodesk.Revit.DB.ParameterSet' to 'System.Collections.Generic.ICollection<Autodesk.Revit.DB.Parameter>, you must use a foreach loop.
-                            Cast all Collections ToList() as they generate errors, except collection sets, like Parameters.
-                            Don't use weird characters such as 》、《.
-                            return responses, and write code without declaring the top function, use available doc, code should be within:
-                            ```csharp
-                            ```";
+               
+                    systemPrompt = aiForm.interactRevitPrompt;
             }
             //@"You are a Revit assistant running inside a Revit add-in.
             //        You can ask to run tools using JSON, like:
@@ -119,7 +80,6 @@ namespace AIChat.AI
                 "Current selection:\n" + selectionInfo + "\n" +
                 "User question:\n" + userQuestion;
 
-
             string response = await Ollama.GetAIResponse(fullPrompt, chatBox, true);
 
             // 2. Try to extract a code block
@@ -130,7 +90,8 @@ namespace AIChat.AI
                 //await ShowAssistantText(response, chatBox);
                 return;
             }
-
+            aiForm.WriteSettings();
+            aiForm.ReadSettings();
             // 3. Compile & run the code
             var executor = new RevitCodeExecutor();
             code = WrapUserCode(code);
@@ -142,14 +103,15 @@ namespace AIChat.AI
             //    return;
             //}
             // Store code for the handler
-            ButtonAiChatCommand.CurrentJob.CodeToRun = code;
-            ButtonAiChatCommand.CurrentJob.LastError = null;
-            ButtonAiChatCommand.AiHandler.aiForm = aiForm;
-            ButtonAiChatCommand.AiHandler.chatBox = chatBox;
-            ButtonAiChatCommand.AiHandler.userQuery = userQuestion;
+            aiForm.UpdateStatus("Running Code...", 0);
+            AiCommand.CurrentJob.CodeToRun = code;
+            AiCommand.CurrentJob.LastError = null;
+            AiCommand.AiHandler.aiForm = aiForm;
+            AiCommand.AiHandler.chatBox = chatBox;
+            AiCommand.AiHandler.userQuery = userQuestion;
             // Ask Revit to execute it in API context
-            ButtonAiChatCommand.AiExternalEvent.Raise();
-
+            AiCommand.AiExternalEvent.Raise();
+            aiForm.UpdateStatus("Status", 0);
             // 4. Optionally, run a follow‑up query asking the model to explain what it did,
             // based on any results your script wrote back (e.g. via a log you pass into the prompt).
             //});
@@ -157,8 +119,7 @@ namespace AIChat.AI
         private string WrapUserCode(string body)
         {
             // body = raw code coming from the model, e.g. inside ```csharp_tool``` block.
-            // It should contain only statements, NOT class or method declarations.
-
+            // It should contain only statements, NOT class or method declarations.            
             return
           @"using System;
             using System.Linq;
@@ -166,6 +127,12 @@ namespace AIChat.AI
             using Autodesk.Revit.DB;
             using Autodesk.Revit.DB.Architecture;
             using Autodesk.Revit.UI;
+            using Autodesk.Revit.Attributes;
+            using Markdig;
+            using System.Drawing.Drawing2D;
+            using System.IO;
+            using System.Reflection;
+            using System.Text;
             public static class AiScript
             {
                 public static string Run(UIApplication app)
@@ -310,7 +277,7 @@ namespace AIChat.AI
         public void Execute(UIApplication app)
         {
 
-            var job = ButtonAiChatCommand.CurrentJob; // wherever you store it
+            var job = AiCommand.CurrentJob; // wherever you store it
             if (string.IsNullOrWhiteSpace(job.CodeToRun))
                 return;
 
@@ -320,7 +287,12 @@ namespace AIChat.AI
             {
                 job.LastError = Executor.LastCompilationErrors;
                 // optionally show a TaskDialog here
-                TaskDialog.Show("AI Script", "Code failed:\n" + job.LastError);
+                //TaskDialog.Show("AI Script", "Code failed:\n" + job.LastError);
+                RevitTask.RunAsync(
+                async (uiApp) =>
+                {
+                    await Ollama.ShowAssistantText($"Running C# Code failed, adjust system prompt or your prompt to handle/solve it:\n{job.LastError}", chatBox);
+                });
                 job.CodeToRun = null;
                 return;
             }
@@ -346,13 +318,9 @@ namespace AIChat.AI
                     string docContext = $"Revit Version: {uiApp.Application.VersionNumber}\n" +
             $"Project: {uiApp.ActiveUIDocument.Document.Title}\n" +
                             $"Active view: {uiApp.ActiveUIDocument.Document.ActiveView.Name}\n";
-                    string systemPrompt =
-                       @$"You are a Revit assistant running inside a Revit add-in in 2 steps, as a user asked a question, you generated the necessery code to read/implement the requirement from the opened Revit Model,
-                        by reading data from the Revit model, the exported data from the data retrieved from the firt step is:{result}.
-                            Secondly, think how to respond to the user question using this data.
-                            Mention the queried data as a summary, and respond to the user's question.";
-
-                    string fullPrompt = "Current prompt:\n" + systemPrompt + "\n" + "Current document context:\n" + docContext + "\n" +
+                    aiForm.ReadSystemPrompts(result.ToString());
+                    aiForm.ReadSettings();
+                    string fullPrompt = "Current prompt:\n" + aiForm.interactRevitPromptFollowUp + "\n" + "Current document context:\n" + docContext + "\n" +
                                             "Original User question:\n" + userQuery;
 
                     string response = await Ollama.GetAIResponse(fullPrompt, chatBox, true);

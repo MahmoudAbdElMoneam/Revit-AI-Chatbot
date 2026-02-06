@@ -190,7 +190,7 @@ namespace AIChat
                 await Ollama.GetAIResponse(prompt, chatBox);
             }
         }
-        void BuildAttachment(object sender, EventArgs e)
+        async void BuildAttachment(object sender, EventArgs e)
         {
             fileDialog.InitialDirectory = initialdirectory;
             fileDialog.Reset();
@@ -205,19 +205,19 @@ namespace AIChat
                 {
                     var file = File.ReadAllBytes(selected);
                     //Limits the size of the attachment to 1.45 MB, which is less than the max possible size of an SMS attachment of 1.5 MB.
-                    if (file.Length > 1450000)
-                    {
-                        MessageBox.Show("The attachment provided " + fileDialog.SafeFileName + " is too big to be sent by SMS. Please select another.", "Attachment not added.");
-                        return;
-                    }
-                    else
-                    {
+                    //if (file.Length > 1450000)
+                    //{
+                    //    MessageBox.Show("The attachment provided " + fileDialog.SafeFileName + " is too big to be sent by SMS. Please select another.", "Attachment not added.");
+                    //    return;
+                    //}
+                    //else
+                    //{
                         chatbox_info.Attachment = file;
-                    }
+                    //}
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    MessageBox.Show("There was an issue with retrieving the file.", "File Operation Error");
+                    await Ollama.ShowAssistantText($"File Operation Error: There was an issue with retrieving the file.\n{ex.Message}", this);
                 }
             }
             else
@@ -265,6 +265,7 @@ namespace AIChat
             {
                 SendMessage(this, null);
             }
+            
         }
 
         //When the Control resizes, it will trigger the resize event for all the ChatItem object inside as well, again with a default width of 60%.
@@ -287,6 +288,14 @@ namespace AIChat
                 SendMessage(sender.ToString(), null);
                 e.Handled = true;
             }
+
+            if (e.KeyCode == Keys.Delete ||
+                (e.Control && (e.KeyCode == Keys.C || e.KeyCode == Keys.V)))
+            {
+                // Allow delete key to work normally within textbox
+                e.SuppressKeyPress = false;
+            }
+
         }
     }
 }

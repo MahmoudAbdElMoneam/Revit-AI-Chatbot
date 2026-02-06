@@ -112,15 +112,19 @@ namespace AIChat
             // 
             // chatTextbox
             // 
+            this.chatTextbox.AcceptsTab = true;
             this.chatTextbox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.chatTextbox.BackColor = System.Drawing.Color.Black;
+            this.chatTextbox.CausesValidation = false;
+            this.chatTextbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chatTextbox.ForeColor = System.Drawing.Color.White;
             this.chatTextbox.Location = new System.Drawing.Point(2, 2);
             this.chatTextbox.Margin = new System.Windows.Forms.Padding(0);
             this.chatTextbox.Multiline = true;
             this.chatTextbox.Name = "chatTextbox";
+            this.chatTextbox.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
             this.chatTextbox.Size = new System.Drawing.Size(391, 109);
             this.chatTextbox.TabIndex = 7;
             this.chatTextbox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chatTextbox_KeyDown);
