@@ -157,11 +157,31 @@ namespace AIChat
             TextChatModel textModel = new TextChatModel();
             if (chatBox != null)
             {
+                var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions()
+                                .UseColorCode()
+                                //.UseEmojiAndSmiley(enableSmileys: true)
+                                .UseAutoIdentifiers()
+                                .UseEmphasisExtras()
+                                .UseAutoLinks()
+                                .UseCitations()
+                                .UseDiagrams()
+                                .UseFigures()
+                                .UseGridTables()
+                                //.UsePipeTables()
+                                .UseListExtras()
+                                .UseDefinitionLists()
+                                .UseTaskLists()
+                                .UseCitations()
+                                .UseSoftlineBreakAsHardlineBreak()
+                                .UseCustomContainers()
+                                .UseGenericAttributes()
+                                .UseAutoLinks().Build();
+                string formattedText = Markdig.Markdown.ToHtml(text, pipeline);
                 textModel = new TextChatModel()
                 {
                     Author = Ollama.ollama != null ? Ollama.ollama.SelectedModel : "No AI Model Found",
                     Inbound = true,
-                    Body = "",
+                    Body = formattedText,
                     Read = true,
                     Time = DateTime.Now
                 };
@@ -171,9 +191,6 @@ namespace AIChat
                 ChatItem chatItem = chatPanel.FirstOrDefault() as ChatItem;
                 System.Windows.Forms.Panel chatItemPanel = chatItem.Parent as System.Windows.Forms.Panel;
                 System.Windows.Forms.Control chatText = chatItem.Controls.Find("bodyTextBox", true).FirstOrDefault();
-
-                var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().UseAutoIdentifiers().UseEmphasisExtras().Build();
-                string formattedText = Markdig.Markdown.ToHtml(text, pipeline);
                 await Ollama.UpdateChat(formattedText, chatItemPanel, chatText);
             }
             form.canClose = true;
@@ -288,7 +305,7 @@ namespace AIChat
                     }
                     previousMessages.Add(new OllamaSharp.Models.Chat.Message() { Content = prompt });
                     previousMessages.Add(new OllamaSharp.Models.Chat.Message() { Content = fullResponse });
-                    form.statusStrip1.Text = $"Response Done.";
+                    form.UpdateStatus($"Response Done");
                 }
                 catch (Exception ex)
                 {
@@ -415,7 +432,11 @@ namespace AIChat
                 //}
             }
         }
-
+        public static async Task DeleteAIModel(string modelName)
+        {
+            form.UpdateStatus($"Deleting Model: {modelName}...", 0);
+            await ollama.DeleteModelAsync(modelName);
+            form.UpdateStatus($"Model Deleted: {modelName}", 100);
+        }
     }
-
 }

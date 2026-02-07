@@ -41,11 +41,14 @@ namespace AIChat
 
             chatTextbox.Enter += ChatEnter;
             chatTextbox.Leave += ChatLeave;
+
             sendButton.Click += SendMessage;
             attachButton.Click += BuildAttachment;
             removeButton.Click += CancelAttachment;
             chatTextbox.KeyDown += OnEnter;
             AddMessage(null);
+            chatTextbox.Enter += aiForm.tb_Enter;
+            chatTextbox.Leave += aiForm.tb_Leave;
         }
 
         /// <summary>
@@ -269,20 +272,21 @@ namespace AIChat
         }
 
         //When the Control resizes, it will trigger the resize event for all the ChatItem object inside as well, again with a default width of 60%.
-        protected override void OnResize(EventArgs e)
-        {
-            base.OnResize(e);
-            foreach (var control in chatItemsPanel.Controls)
-            {
-                if (control is ChatItem)
-                {
-                    (control as ChatItem).ResizeBubbles((int)(chatItemsPanel.Width * 0.9));
-                }
-            }
-        }
+        //protected override void OnResize(EventArgs e)
+        //{
+        //    //base.OnResize(e);
+        //    foreach (var control in chatItemsPanel.Controls)
+        //    {
+        //        if (control is ChatItem)
+        //        {
+        //            (control as ChatItem).ResizeBubbles((int)(chatItemsPanel.Width * 0.9));
+        //        }
+        //    }
+        //}
 
         private void chatTextbox_KeyDown(object sender, KeyEventArgs e)
         {
+            (sender as System.Windows.Forms.TextBox).Focus();
             if (e.KeyCode == System.Windows.Forms.Keys.Enter)
             {
                 SendMessage(sender.ToString(), null);
@@ -296,6 +300,17 @@ namespace AIChat
                 e.SuppressKeyPress = false;
             }
 
+        }
+        private void Chatbox_Resize(object sender, EventArgs e)
+        {
+            int chatBoxWidth = (sender as AIChat.Chatbox).Width;
+            foreach (var control in chatItemsPanel.Controls)
+            {
+                if (control is ChatItem)
+                {
+                    (control as ChatItem).ResizeBubbles((int)(chatItemsPanel.Width * 0.9));
+                }
+            }
         }
     }
 }

@@ -47,22 +47,22 @@ namespace AIChat
             this.authorPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.authorPanel.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.authorPanel.ForeColor = System.Drawing.SystemColors.ButtonShadow;
-            this.authorPanel.Location = new System.Drawing.Point(15, 58);
+            this.authorPanel.Location = new System.Drawing.Point(15, 179);
             this.authorPanel.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.authorPanel.MaximumSize = new System.Drawing.Size(0, 40);
             this.authorPanel.Name = "authorPanel";
             this.authorPanel.Padding = new System.Windows.Forms.Padding(0, 8, 0, 0);
-            this.authorPanel.Size = new System.Drawing.Size(163, 40);
+            this.authorPanel.Size = new System.Drawing.Size(269, 40);
             this.authorPanel.TabIndex = 8;
             // 
             // authorLabel
             // 
-            this.authorLabel.Dock = System.Windows.Forms.DockStyle.Left;
+            this.authorLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.authorLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
             this.authorLabel.Location = new System.Drawing.Point(0, 8);
             this.authorLabel.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.authorLabel.Name = "authorLabel";
-            this.authorLabel.Size = new System.Drawing.Size(239, 32);
+            this.authorLabel.Size = new System.Drawing.Size(269, 32);
             this.authorLabel.TabIndex = 0;
             this.authorLabel.Text = "System - 10/22/2020";
             this.authorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -76,13 +76,13 @@ namespace AIChat
             this.bodyPanel.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.bodyPanel.Name = "bodyPanel";
             this.bodyPanel.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.bodyPanel.Size = new System.Drawing.Size(163, 50);
+            this.bodyPanel.Size = new System.Drawing.Size(269, 171);
             this.bodyPanel.TabIndex = 9;
             // 
             // bodyTextBox
             // 
             this.bodyTextBox.AutoScroll = true;
-            this.bodyTextBox.AutoScrollMinSize = new System.Drawing.Size(155, 30);
+            this.bodyTextBox.AutoScrollMinSize = new System.Drawing.Size(145, 25);
             this.bodyTextBox.BackColor = System.Drawing.SystemColors.Highlight;
             this.bodyTextBox.BaseStylesheet = null;
             this.bodyTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -91,7 +91,7 @@ namespace AIChat
             this.bodyTextBox.Margin = new System.Windows.Forms.Padding(0);
             this.bodyTextBox.Name = "bodyTextBox";
             this.bodyTextBox.Padding = new System.Windows.Forms.Padding(5);
-            this.bodyTextBox.Size = new System.Drawing.Size(157, 46);
+            this.bodyTextBox.Size = new System.Drawing.Size(147, 167);
             this.bodyTextBox.TabIndex = 7;
             this.bodyTextBox.Text = "HTML";
             // 
@@ -105,7 +105,7 @@ namespace AIChat
             this.MinimumSize = new System.Drawing.Size(193, 106);
             this.Name = "ChatItem";
             this.Padding = new System.Windows.Forms.Padding(15, 8, 15, 8);
-            this.Size = new System.Drawing.Size(193, 106);
+            this.Size = new System.Drawing.Size(299, 227);
             this.authorPanel.ResumeLayout(false);
             this.bodyPanel.ResumeLayout(false);
             this.ResumeLayout(false);

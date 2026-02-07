@@ -4,6 +4,8 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using Autodesk.Windows;
 using DocumentFormat.OpenXml.Office.SpreadSheetML.Y2023.MsForms;
+using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Newtonsoft.Json;
 using OllamaSharp;
 using OllamaSharp.Models;
@@ -19,6 +21,7 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Forms;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxTokenParser;
 using Form = System.Windows.Forms.Form;
@@ -97,8 +100,12 @@ namespace AIChat
             }
             ReadSystemPrompts("Not yet recieved, user must allow interaction with Revit file and send a message first.");
             ReadSettings();
-
+            this.KeyDown += Window_KeyDown;
+            this.PreviewKeyDown += Window_PreviewKeyDown;
         }
+
+
+
         // Make Load event async
         private async Task startOllama()
         {
@@ -109,6 +116,7 @@ namespace AIChat
         private async void AiChatForm_Load(object sender, EventArgs e)
         {
             this.Activate();
+            this.Focus();
             await startOllama();
 
             // Or, if you want to show UI first:
@@ -418,7 +426,6 @@ namespace AIChat
             WriteSettings();
         }
         public bool canClose = false;
-
         private async void AiChatForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             // If the form is not yet allowed to close (i.e., this is the first close attempt)...
@@ -431,14 +438,127 @@ namespace AIChat
             }
             else
             {
-                subAiExternalEvent.Dispose();
-                subAiExternalEvent = null;
-                subAiHandler = null;
-
-                //You have to call
-                this.Close();// Allow the form to close without interruption
+                //Clean up
+                if (subAiExternalEvent != null)
+                    subAiExternalEvent.Dispose();
+                if (subAiExternalEvent != null)
+                    subAiExternalEvent = null;
+                if (subAiHandler != null)
+                    subAiHandler = null;
             }
         }
 
+        private void btnDeleteAIModel_Click(object sender, EventArgs e)
+        {
+            string modelName = cbAIModels.SelectedItem.ToString();
+            cbAIModels.Items.Remove(modelName);
+            Ollama.DeleteAIModel(modelName);
+        }
+        protected override bool ProcessCmdKey(ref System.Windows.Forms.Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Delete ||
+                 (keyData == Keys.Control && (keyData == Keys.C || keyData == Keys.V)))
+            {
+                // Handle the delete action within your form's logic if needed.
+                // For example, delete a selected item in a ListBox.
+                // If you want to prevent the key from reaching Revit, return true.
+                // If the user is editing text in a TextBox, the TextBox's default handling will occur first.
+
+                // If a TextBox has focus, you might still need to ensure the key is consumed.
+                // A common issue is the key still passing through if the control doesn't fully consume it.
+
+                // Returning true indicates that the key has been handled and should not be processed further.
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+        public void Window_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            if (e.KeyData == Keys.Delete ||
+                (e.Control && (e.KeyData == Keys.C || e.KeyData == Keys.V)))
+            {
+                // If you want to consume the key press entirely and stop it from reaching Revit:
+                // e.Handled = true; 
+
+                // If you still want controls (like textboxes) within the WPF form to use the delete key normally, 
+                // you should check if a relevant control has focus and only set e.Handled = true if not.
+
+                // Example: Do not set e.Handled = true if the focus is on a TextBox/RichTextBox
+                if (sender is System.Windows.Controls.TextBox || sender is System.Windows.Controls.RichTextBox)
+                {
+
+                }
+                else
+                {
+                    // Block the event from passing to Revit
+                }
+            }
+        }
+        public void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData == Keys.Delete ||
+                (e.Control && (e.KeyData == Keys.C || e.KeyData == Keys.V)))
+            {
+                // If you want to consume the key press entirely and stop it from reaching Revit:
+                // e.Handled = true; 
+
+                // If you still want controls (like textboxes) within the WPF form to use the delete key normally, 
+                // you should check if a relevant control has focus and only set e.Handled = true if not.
+
+                // Example: Do not set e.Handled = true if the focus is on a TextBox/RichTextBox
+                if (sender is System.Windows.Controls.TextBox || sender is System.Windows.Controls.RichTextBox)
+                {
+                    e.Handled = false; // Let the control handle it
+                }
+                else
+                {
+                    e.Handled = true; // Block the event from passing to Revit
+                }
+            }
+        }
+
+        Dictionary<ElementId, bool> previousPinnedState = new Dictionary<ElementId, bool>();
+        public void tb_Enter(object sender, EventArgs e)
+        {
+            if (uiApp?.ActiveUIDocument == null)
+                return;
+            UIDocument uidoc = uiApp.ActiveUIDocument;
+            Document doc = uiApp.ActiveUIDocument.Document;
+            Autodesk.Revit.UI.Selection.Selection sel = uidoc.Selection;
+            ICollection<ElementId> ids = sel.GetElementIds();
+
+            foreach (ElementId id in ids)
+            {
+                Element el = doc.GetElement(id);
+                if (previousPinnedState.ContainsKey(id))
+                    previousPinnedState[id] = el.Pinned;
+                else
+                    previousPinnedState.Add(id, el.Pinned);
+
+                el.Pinned = true;
+            }
+        }
+
+        public void tb_Leave(object sender, EventArgs e)
+        {
+            if (uiApp?.ActiveUIDocument == null)
+                return;
+            UIDocument uidoc = uiApp.ActiveUIDocument;
+            Document doc = uiApp.ActiveUIDocument.Document;
+            Autodesk.Revit.UI.Selection.Selection sel = uidoc.Selection;
+            ICollection<ElementId> ids = sel.GetElementIds();
+
+            foreach (ElementId id in ids)
+            {
+                Element el = doc.GetElement(id);
+                if (previousPinnedState.ContainsKey(id))
+                {
+                    el.Pinned = previousPinnedState[id];
+                    previousPinnedState.Remove(id);
+                }
+                else
+                    el.Pinned = false;
+            }
+        }
     }
 }

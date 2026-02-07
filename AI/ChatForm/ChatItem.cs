@@ -1,8 +1,10 @@
-﻿using Autodesk.Revit.DB;
+﻿using AIChat;
+using Autodesk.Revit.DB;
+using ColorCode.Compilation.Languages;
+using DocumentFormat.OpenXml.Drawing.Charts;
 //using Microsoft.Web.WebView2.Core;
 //using Microsoft.Web.WebView2.WinForms;
 using Newtonsoft.Json;
-using AIChat;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -70,7 +72,7 @@ namespace AIChat
             | System.Windows.Forms.AnchorStyles.Right)));
                 bodyTextBox.Dock = DockStyle.Right;
                 authorLabel.RightToLeft = RightToLeft.Yes;
-                authorLabel.Dock = DockStyle.Right;
+                //authorLabel.Dock = DockStyle.Right;
             }
 
             //Fills in the label. 
@@ -137,8 +139,8 @@ namespace AIChat
                                     padding: 0px;
                                     margin: 0px;
                                     height: max-content;"
-                                     + (ChatModel.Inbound == true ? @"background-color: #647896;" : @"background-color: #4169E1;") +
-                                @"}
+                                //+ (ChatModel.Inbound == true ? @"background-color: #647896;" : @"background-color: #4169E1;")
+                                + @"}
                                 .chat-container {
                                     padding: 1rem;
                                   }
@@ -262,8 +264,7 @@ namespace AIChat
                         int height = 0;
                         //await TextWebViewChange(body, bodyTextBox);
                         //TextChange(body);
-                        await TextHtmlChange();
-
+                        await TextHtmlChange(textmodel, maxwidth);
                         break;
                     case "attachment":
                         var attachmodel = ChatModel as AttachmentChatModel;
@@ -275,30 +276,56 @@ namespace AIChat
             }
 
             //ResumeLayout();
-            async Task TextHtmlChange()
+            async Task TextHtmlChange(TextChatModel textmodel, int maxWidth)
             {
-                int stringwidth = bodyTextBox.DisplayRectangle.Width + (bodyTextBox.DisplayRectangle.X *-1);
-                System.Drawing.Size chatItemSize = this.SizeFromClientSize(bodyTextBox.ClientSize);
+                //int availableWidth = bodyPanel.Parent.Parent.Width;
+                int stringwidth = this.bodyTextBox.DisplayRectangle.Width + (this.bodyTextBox.DisplayRectangle.X * -1);
+                System.Drawing.Size chatItemSize = this.SizeFromClientSize(this.bodyTextBox.ClientSize);
                 bool sizeChanged = false;
+                //string boxContents = textmodel.Body;
+                //if(string.IsNullOrEmpty(boxContents))
+                string boxContents = this.bodyTextBox.GetHtml();
+                //var gfx = this.bodyTextBox.CreateGraphics();
+                var gfx = this.bodyPanel.CreateGraphics();
 
-                var gfx = this.CreateGraphics();                
-
-                var size = HtmlRender.Measure(gfx, bodyTextBox.GetHtml(), 0);
-                if (stringwidth != 0 && this.Width != stringwidth)
+                if (string.IsNullOrEmpty(boxContents))
+                    return;
+                var size = HtmlRender.Measure(gfx, 
+                    bodyTextBox.GetHtml(),
+                    //boxContents,
+                    0);
+                int height = (int)size.Height;
+                int newHeight = (int)Math.Round(height * (double)1.1) + 100;
+                if (size.Width > maxwidth || (size.Width < maxwidth && height > 100))
                 {
-                    bodyTextBox.Width =Math.Min((int)Math.Round(bodyPanel.Width*0.8), (int)(size.Width+20));
+                    size = HtmlRender.Measure(gfx,
+                    //bodyTextBox.GetHtml(),
+                    boxContents,
+                    maxWidth);
+                    height = (int)size.Height;
+                    newHeight = (int)Math.Round(height * (double)1.1)+100;
+                }
+                //int newWidth = Math.Min(maxWidth, (int)(size.Width + 25));
+                int newWidth = Math.Min(maxWidth, (int)(size.Width)) +20;
+                if (maxWidth != 0 && newWidth != this.bodyTextBox.Width)
+                {
+                    //bodyTextBox.Width = maxWidth;
+                    this.bodyTextBox.Width= newWidth;
+                    //bodyPanel.Width = Math.Min((int)Math.Round(bodyPanel.Width * 0.8), (int)(size.Width + 20));
+
                     sizeChanged = true;
                 }
-                int height = (int)size.Height;
-                    //bodyTextBox.DisplayRectangle.Height + (bodyTextBox.DisplayRectangle.Y * -1);
-                if (height != 0 && this.Height != height)
+                
+                //bodyTextBox.DisplayRectangle.Height + (bodyTextBox.DisplayRectangle.Y * -1);
+                if (height != 0 && this.Height != newHeight)
                 {
                     //bodyTextBox.Height = height;
-                    Height = (int)Math.Round(height * (double)1.11)+100;
+                    this.Height = newHeight;
+                    //Height = (int)Math.Round(height * (double)1.11) + 100;
                     //this.Height = height + 10;
                     //sizeChanged = true;
                 }
-                if(sizeChanged)
+                if (sizeChanged)
                     Application.DoEvents();
             }
             //async Task TextWebViewChange(string body, WebView2 webView)
@@ -314,7 +341,7 @@ namespace AIChat
             void TextChange(string body)
             {
                 // Execute script to get the height of the content
-                
+
                 int fontheight = 24;
                 var gfx = this.CreateGraphics();
                 int lines = 1;

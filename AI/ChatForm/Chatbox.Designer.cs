@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -182,6 +183,7 @@ namespace AIChat
             this.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.Name = "Chatbox";
             this.Size = new System.Drawing.Size(547, 741);
+            this.Resize += new System.EventHandler(this.Chatbox_Resize);
             this.bottomPanel.ResumeLayout(false);
             this.bottomPanel.PerformLayout();
             this.panel1.ResumeLayout(false);
@@ -190,8 +192,8 @@ namespace AIChat
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
-
         }
+
 
         #endregion
         private System.Windows.Forms.Panel bottomPanel;

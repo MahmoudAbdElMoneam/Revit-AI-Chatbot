@@ -38,6 +38,7 @@ namespace AIChat
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.btnDeleteAIModel = new System.Windows.Forms.Button();
             this.cbAIModels = new System.Windows.Forms.ComboBox();
             this.cbRetrieveAndReAsk = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -75,7 +76,7 @@ namespace AIChat
             this.groupBox1.Margin = new System.Windows.Forms.Padding(0);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 22, 2, 3);
-            this.groupBox1.Size = new System.Drawing.Size(329, 553);
+            this.groupBox1.Size = new System.Drawing.Size(674, 593);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             // 
@@ -96,7 +97,7 @@ namespace AIChat
             this.panelChat.Location = new System.Drawing.Point(2, 37);
             this.panelChat.Margin = new System.Windows.Forms.Padding(2);
             this.panelChat.Name = "panelChat";
-            this.panelChat.Size = new System.Drawing.Size(325, 513);
+            this.panelChat.Size = new System.Drawing.Size(670, 553);
             this.panelChat.TabIndex = 0;
             // 
             // splitContainer1
@@ -115,8 +116,8 @@ namespace AIChat
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.groupBox1);
-            this.splitContainer1.Size = new System.Drawing.Size(575, 553);
-            this.splitContainer1.SplitterDistance = 243;
+            this.splitContainer1.Size = new System.Drawing.Size(987, 593);
+            this.splitContainer1.SplitterDistance = 310;
             this.splitContainer1.SplitterWidth = 3;
             this.splitContainer1.TabIndex = 1;
             // 
@@ -130,7 +131,7 @@ namespace AIChat
             this.groupBox2.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.groupBox2.Size = new System.Drawing.Size(243, 553);
+            this.groupBox2.Size = new System.Drawing.Size(310, 593);
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Settings";
@@ -139,16 +140,32 @@ namespace AIChat
             // 
             this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox5.Controls.Add(this.btnDeleteAIModel);
             this.groupBox5.Controls.Add(this.cbAIModels);
             this.groupBox5.Controls.Add(this.cbRetrieveAndReAsk);
             this.groupBox5.Controls.Add(this.label1);
             this.groupBox5.Controls.Add(this.cbInteractRevit);
             this.groupBox5.Location = new System.Drawing.Point(6, 94);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(232, 135);
+            this.groupBox5.Size = new System.Drawing.Size(299, 135);
             this.groupBox5.TabIndex = 8;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "AI Model Settings";
+            // 
+            // btnDeleteAIModel
+            // 
+            this.btnDeleteAIModel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnDeleteAIModel.BackColor = System.Drawing.SystemColors.Control;
+            this.btnDeleteAIModel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDeleteAIModel.ForeColor = System.Drawing.Color.Black;
+            this.btnDeleteAIModel.Image = global::AIChat.Properties.Resources.delete;
+            this.btnDeleteAIModel.Location = new System.Drawing.Point(265, 34);
+            this.btnDeleteAIModel.Name = "btnDeleteAIModel";
+            this.btnDeleteAIModel.Size = new System.Drawing.Size(28, 23);
+            this.btnDeleteAIModel.TabIndex = 4;
+            this.toolTip1.SetToolTip(this.btnDeleteAIModel, "Save or Add new System Prompt");
+            this.btnDeleteAIModel.UseVisualStyleBackColor = false;
+            this.btnDeleteAIModel.Click += new System.EventHandler(this.btnDeleteAIModel_Click);
             // 
             // cbAIModels
             // 
@@ -158,9 +175,11 @@ namespace AIChat
             this.cbAIModels.Location = new System.Drawing.Point(98, 33);
             this.cbAIModels.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.cbAIModels.Name = "cbAIModels";
-            this.cbAIModels.Size = new System.Drawing.Size(129, 24);
+            this.cbAIModels.Size = new System.Drawing.Size(162, 24);
             this.cbAIModels.TabIndex = 3;
             this.cbAIModels.SelectedIndexChanged += new System.EventHandler(this.cbAIModels_SelectedIndexChanged_1);
+            this.cbAIModels.Enter += new System.EventHandler(this.tb_Enter);
+            this.cbAIModels.Leave += new System.EventHandler(this.tb_Leave);
             // 
             // cbRetrieveAndReAsk
             // 
@@ -213,7 +232,7 @@ namespace AIChat
             this.groupBox4.Controls.Add(this.cbPromptName);
             this.groupBox4.Location = new System.Drawing.Point(5, 235);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(233, 310);
+            this.groupBox4.Size = new System.Drawing.Size(300, 350);
             this.groupBox4.TabIndex = 7;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "System Prompts";
@@ -227,7 +246,7 @@ namespace AIChat
             this.btnDeletePrompt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDeletePrompt.ForeColor = System.Drawing.Color.Black;
             this.btnDeletePrompt.Image = global::AIChat.Properties.Resources.delete;
-            this.btnDeletePrompt.Location = new System.Drawing.Point(172, 31);
+            this.btnDeletePrompt.Location = new System.Drawing.Point(239, 31);
             this.btnDeletePrompt.Name = "btnDeletePrompt";
             this.btnDeletePrompt.Size = new System.Drawing.Size(28, 23);
             this.btnDeletePrompt.TabIndex = 3;
@@ -244,8 +263,10 @@ namespace AIChat
             this.tbPrompt.Location = new System.Drawing.Point(8, 62);
             this.tbPrompt.Multiline = true;
             this.tbPrompt.Name = "tbPrompt";
-            this.tbPrompt.Size = new System.Drawing.Size(225, 242);
+            this.tbPrompt.Size = new System.Drawing.Size(292, 282);
             this.tbPrompt.TabIndex = 2;
+            this.tbPrompt.Enter += new System.EventHandler(this.tb_Enter);
+            this.tbPrompt.Leave += new System.EventHandler(this.tb_Leave);
             // 
             // btnAddPrompt
             // 
@@ -254,7 +275,7 @@ namespace AIChat
             this.btnAddPrompt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAddPrompt.ForeColor = System.Drawing.Color.Black;
             this.btnAddPrompt.Image = global::AIChat.Properties.Resources.save;
-            this.btnAddPrompt.Location = new System.Drawing.Point(205, 31);
+            this.btnAddPrompt.Location = new System.Drawing.Point(272, 31);
             this.btnAddPrompt.Name = "btnAddPrompt";
             this.btnAddPrompt.Size = new System.Drawing.Size(28, 23);
             this.btnAddPrompt.TabIndex = 1;
@@ -269,9 +290,11 @@ namespace AIChat
             this.cbPromptName.FormattingEnabled = true;
             this.cbPromptName.Location = new System.Drawing.Point(8, 31);
             this.cbPromptName.Name = "cbPromptName";
-            this.cbPromptName.Size = new System.Drawing.Size(158, 24);
+            this.cbPromptName.Size = new System.Drawing.Size(225, 24);
             this.cbPromptName.TabIndex = 0;
             this.cbPromptName.SelectedValueChanged += new System.EventHandler(this.cbPromptName_SelectedValueChanged);
+            this.cbPromptName.Enter += new System.EventHandler(this.tb_Enter);
+            this.cbPromptName.Leave += new System.EventHandler(this.tb_Leave);
             // 
             // groupBox3
             // 
@@ -281,7 +304,7 @@ namespace AIChat
             this.groupBox3.Controls.Add(this.btnBrowseOllama);
             this.groupBox3.Location = new System.Drawing.Point(5, 25);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(236, 63);
+            this.groupBox3.Size = new System.Drawing.Size(303, 63);
             this.groupBox3.TabIndex = 5;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Ollama path";
@@ -292,14 +315,16 @@ namespace AIChat
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbOllamaPath.Location = new System.Drawing.Point(8, 28);
             this.tbOllamaPath.Name = "tbOllamaPath";
-            this.tbOllamaPath.Size = new System.Drawing.Size(118, 22);
+            this.tbOllamaPath.Size = new System.Drawing.Size(185, 22);
             this.tbOllamaPath.TabIndex = 1;
             this.tbOllamaPath.TextChanged += new System.EventHandler(this.tbOllamaPath_TextChanged);
+            this.tbOllamaPath.Enter += new System.EventHandler(this.tb_Enter);
+            this.tbOllamaPath.Leave += new System.EventHandler(this.tb_Leave);
             // 
             // btnBrowseOllama
             // 
             this.btnBrowseOllama.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnBrowseOllama.Location = new System.Drawing.Point(134, 28);
+            this.btnBrowseOllama.Location = new System.Drawing.Point(201, 28);
             this.btnBrowseOllama.Name = "btnBrowseOllama";
             this.btnBrowseOllama.Size = new System.Drawing.Size(93, 28);
             this.btnBrowseOllama.TabIndex = 0;
@@ -313,10 +338,10 @@ namespace AIChat
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripProgressBar1,
             this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 550);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 590);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(2, 0, 13, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(580, 31);
+            this.statusStrip1.Size = new System.Drawing.Size(992, 31);
             this.statusStrip1.TabIndex = 3;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -335,7 +360,7 @@ namespace AIChat
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(580, 581);
+            this.ClientSize = new System.Drawing.Size(992, 621);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.splitContainer1);
             this.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
@@ -388,6 +413,7 @@ namespace AIChat
         private ToolTip toolTip1;
         private GroupBox groupBox5;
         private Button btnDeletePrompt;
+        private Button btnDeleteAIModel;
     }
 }
 
