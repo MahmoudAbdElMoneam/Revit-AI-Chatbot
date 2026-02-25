@@ -47,7 +47,7 @@ namespace AIChat
                 chatModel = new TextChatModel()
                 {
                     Author = "System",
-                    Body = "Welcome to our AI Chat, you can allow the model to interact with an opened Revit model if you check the box on the left.",
+                    Body = "Welcome to our AI Chat, you can allow the model to interact with an opened Revit model if you check the two boxes on the left.",
                     Inbound = true,
                     Time = DateTime.Now
                 };

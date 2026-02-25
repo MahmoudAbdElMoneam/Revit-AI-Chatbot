@@ -236,7 +236,6 @@
 			<AutoGen>True</AutoGen>
 			<DependentUpon>Resources.resx</DependentUpon>
 		</Compile>
-		<Compile Include="JsonNetFlattener.cs" />
 		<Compile Include="Properties\AssemblyInfo.cs" />
 	</ItemGroup>
 	<ItemGroup>
