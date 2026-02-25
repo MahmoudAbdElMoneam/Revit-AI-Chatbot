@@ -41,9 +41,9 @@ The current version can:
 ## ⚙️ How It Works
 
 1. ✍️ You ask the chatbot something about the open Revit model — e.g., *“List all walls higher than 3 meters.”*
-2. 🧩 The assistant generates the necessary **C# snippet** to query Revit through the API.
-3. ⚡ The code is **executed locally**, and results are passed back to the AI.
-4. 🤖 The AI **analyzes and explains** the output conversationally.
+2. 🧩 The assistant generates the necessary **C# snippet** to query Revit through the API
+3. ⚡ The code is **executed locally**, and results are passed back to the AI
+4. 🤖 The AI **analyzes and explains** the output conversationally
 
 ---
 
@@ -59,9 +59,9 @@ You can edit, refine, or completely replace them to tailor how the AI behaves.
 ## 🐞 Handling Errors
 
 If an exception occurs during execution:
-1. Copy or capture the error.
-2. Send it back to the chatbot.
-3. The model will **try to fix the code automatically**.
+1. Copy or capture the error
+2. Send it back to the chatbot
+3. The model will **try to fix the code automatically**
 
 ---
 
