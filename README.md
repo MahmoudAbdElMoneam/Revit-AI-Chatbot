@@ -108,4 +108,7 @@ Feel free to fork this repo, tweak the prompts, or suggest ideas via pull reques
 📜 License
 This project is released under the MIT License — use it freely.
 
+📦 Used Packages
+- [HtmlRenderer.WinForms](https://github.com/ArthurHub/HTML-Renderer/blob/master/Source/HtmlRenderer.WinForms/HtmlRender.cs)
+
 🌟 If you find it useful, give it a ⭐ and share feedback!
