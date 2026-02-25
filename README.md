@@ -80,12 +80,11 @@ If an exception occurs during execution:
 git clone https://github.com/MahmoudAbdElMoneam/AIChat.git
 Then open the project in Visual Studio, restore dependencies, and build the solution.
 Load the resulting add-in into Revit and start chatting!
-
+```
 ---
 
 ## 📦 Installation for users
 
-```bash
 From the releases section on the right, download the zip file, copy to C:\ProgramData\Autodesk\ApplicationPlugins\
 Unblock it, extract it to the folder directly.
 Then open Revit and start chatting!
