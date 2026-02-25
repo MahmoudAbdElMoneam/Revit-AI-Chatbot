@@ -74,28 +74,31 @@ If an exception occurs during execution:
 
 ---
 
-## 📦 Installation
+## 📦 Installation for developers
 
 ```bash
-git clone https://github.com/yourusername/revit-ai-chatbot.git
+git clone https://github.com/MahmoudAbdElMoneam/AIChat.git
 Then open the project in Visual Studio, restore dependencies, and build the solution.
 Load the resulting add-in into Revit and start chatting!
 
+---
+
+## 📦 Installation for users
+
+```bash
+From the releases section on the right, download the zip file, copy to C:\ProgramData\Autodesk\ApplicationPlugins\
+Unblock it, extract it to the folder directly.
+Then open Revit and start chatting!
+
 🗺️ Roadmap
- Enhanced context awareness
-
+ More testing on different use-cases
+ Enhanced context awareness after closing/reopening
  Fine-tuned local model integration
-
  Persistent chat history
-
  Plugin settings UI
-
  Advanced error tracing
-
  Handle Delete/ctrl+c/ctrl+v keys presses resulting in losing focus to Revit (Modeless form)
-
  Allow for different system prompts to be saved and utilized
-
  Test and enable attachements processing for multimodal interaction
 
 🤝 Contributing
