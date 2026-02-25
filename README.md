@@ -3,7 +3,7 @@
 ![C#](https://img.shields.io/badge/C%23-239120?style=for-the-badge&logo=c-sharp&logoColor=white)
 ![.NET Framework](https://img.shields.io/badge/.NET_Framework-5C2D91?style=for-the-badge&logo=.net&logoColor=white)
 ![Revit](https://img.shields.io/badge/Revit_API-007ACC?style=for-the-badge&logo=autodesk&logoColor=white)
-![AI](https://img.shields.io/badge/AI-Powered_by_OLLAMA-blueviolet?style=for-the-badge)
+![AI](https://img.shields.io/badge/AI-Powered_by_Ollama-blueviolet?style=for-the-badge)
 <img width="2379" height="1213" alt="image" src="https://github.com/user-attachments/assets/2841e9f8-c8a8-4347-8676-f65ad3888d40" />
 
 ---
@@ -30,7 +30,7 @@ The current version can:
 
 ## 🧱 Features
 
-- ✅ Local AI integration via **OLLAMA**
+- ✅ Local AI integration via **Ollama**
 - ✅ Privacy-focused (no cloud data exposure)
 - ✅ Editable **system prompts** for controlling generation behavior
 - ✅ Code execution from chat context
