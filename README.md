@@ -77,7 +77,7 @@ If an exception occurs during execution:
 ## 📦 Installation for developers
 
 ```bash
-git clone https://github.com/MahmoudAbdElMoneam/AIChat.git
+git clone https://github.com/MahmoudAbdElMoneam/Revit-AI-Chatbot.git
 ```
 Then open the project in Visual Studio, restore dependencies, and build the solution.
 Load the resulting add-in into Revit and start chatting!
