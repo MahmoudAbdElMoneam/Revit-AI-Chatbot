@@ -70,7 +70,7 @@ If an exception occurs during execution:
 - Autodesk Revit
 - .NET Framework 4.8
 - OLLAMA installed locally (Download and extract ollama-windows-amd64.zip from https://github.com/ollama/ollama/releases, then in the Add-In Browse for the exe file)
-- A supported local model (e.g., **gpt-oss:20b**, **danielsheep/Qwen3-Coder-30B-A3B-Instruct-1M-Unsloth:UD-Q4_K_XL**, etc.)
+- A supported local model from https://ollama.com/search (e.g., **gpt-oss:20b**, **danielsheep/Qwen3-Coder-30B-A3B-Instruct-1M-Unsloth:UD-Q4_K_XL**, etc.)
 
 ---
 
