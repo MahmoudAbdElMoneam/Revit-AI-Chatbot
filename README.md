@@ -91,15 +91,15 @@ Unblock it, extract it to the folder directly.
 Then open Revit and start chatting!
 
 🗺️ Roadmap
-More testing on different use-cases
-Enhanced context awareness after closing/reopening
-Fine-tuned local model integration
-Persistent chat history
-Plugin settings UI
-Advanced error tracing
-Handle Delete/ctrl+c/ctrl+v keys presses resulting in losing focus to Revit (Modeless form)
-Allow for different system prompts to be saved and utilized
-Test and enable attachements processing for multimodal interaction
+- More testing on different use-cases
+- Enhanced context awareness after closing/reopening
+- Fine-tuned local model integration
+- Persistent chat history
+- Plugin settings UI
+- Advanced error tracing
+- Handle Delete/ctrl+c/ctrl+v keys presses resulting in losing focus to Revit (Modeless form)
+- Allow for different system prompts to be saved and utilized
+- Test and enable attachements processing for multimodal interaction
 
 🤝 Contributing
 Contributions are welcome!
