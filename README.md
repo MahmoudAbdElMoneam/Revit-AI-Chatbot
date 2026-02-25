@@ -3,7 +3,7 @@
 ![C#](https://img.shields.io/badge/C%23-239120?style=for-the-badge&logo=c-sharp&logoColor=white)
 ![.NET Framework](https://img.shields.io/badge/.NET_Framework-5C2D91?style=for-the-badge&logo=.net&logoColor=white)
 ![Revit](https://img.shields.io/badge/Revit_API-007ACC?style=for-the-badge&logo=autodesk&logoColor=white)
-![AI](https://img.shields.io/badge/AI-Powered_by_OLLAMA-blueviolet?style=for-the-badge)
+![AI](https://img.shields.io/badge/AI-Powered_by_Ollama-blueviolet?style=for-the-badge)
 <img width="2379" height="1213" alt="image" src="https://github.com/user-attachments/assets/2841e9f8-c8a8-4347-8676-f65ad3888d40" />
 
 ---
@@ -30,7 +30,7 @@ The current version can:
 
 ## 🧱 Features
 
-- ✅ Local AI integration via **OLLAMA**
+- ✅ Local AI integration via **Ollama**
 - ✅ Privacy-focused (no cloud data exposure)
 - ✅ Editable **system prompts** for controlling generation behavior
 - ✅ Code execution from chat context
@@ -41,9 +41,9 @@ The current version can:
 ## ⚙️ How It Works
 
 1. ✍️ You ask the chatbot something about the open Revit model — e.g., *“List all walls higher than 3 meters.”*
-2. 🧩 The assistant generates the necessary **C# snippet** to query Revit through the API.
-3. ⚡ The code is **executed locally**, and results are passed back to the AI.
-4. 🤖 The AI **analyzes and explains** the output conversationally.
+2. 🧩 The assistant generates the necessary **C# snippet** to query Revit through the API
+3. ⚡ The code is **executed locally**, and results are passed back to the AI
+4. 🤖 The AI **analyzes and explains** the output conversationally
 
 ---
 
@@ -59,9 +59,9 @@ You can edit, refine, or completely replace them to tailor how the AI behaves.
 ## 🐞 Handling Errors
 
 If an exception occurs during execution:
-1. Copy or capture the error.
-2. Send it back to the chatbot.
-3. The model will **try to fix the code automatically**.
+1. Copy or capture the error
+2. Send it back to the chatbot
+3. The model will **try to fix the code automatically**
 
 ---
 
@@ -77,10 +77,10 @@ If an exception occurs during execution:
 ## 📦 Installation for developers
 
 ```bash
-git clone https://github.com/MahmoudAbdElMoneam/AIChat.git
+git clone https://github.com/MahmoudAbdElMoneam/Revit-AI-Chatbot.git
 ```
 Then open the project in Visual Studio, restore dependencies, and build the solution.
-Load the resulting add-in into Revit and start chatting!
+Build the add-in, open Revit and start chatting!
 
 ---
 
@@ -88,9 +88,9 @@ Load the resulting add-in into Revit and start chatting!
 
 From the releases section on the right, download the zip file, copy to C:\ProgramData\Autodesk\ApplicationPlugins\
 Unblock it, extract it to the folder directly.
-Then open Revit and start chatting!
+Then open Revit, Run the Add-In, select ollama.exe location, select a local model, if no local model is available just write the model name in the AI Model combo box to download it (from https://ollama.com/search e.g., **gpt-oss:20b**). Then Start chatting!
 
-🗺️ Roadmap
+## 🗺️ Roadmap
 - More testing on different use-cases
 - Enhanced context awareness after closing/reopening
 - Fine-tuned local model integration
@@ -100,12 +100,21 @@ Then open Revit and start chatting!
 - Handle Delete/ctrl+c/ctrl+v keys presses resulting in losing focus to Revit (Modeless form)
 - Allow for different system prompts to be saved and utilized
 - Test and enable attachements processing for multimodal interaction
+- Develop the status bar and the UI to make it more fluid
+- Automatic installation of Ollama if not detected
 
-🤝 Contributing
+## 🤝 Contributing
 Contributions are welcome!
 Feel free to fork this repo, tweak the prompts, or suggest ideas via pull requests or issues.
 
-📜 License
+## 📜 License
 This project is released under the MIT License — use it freely.
+
+## 📦 Used Packages
+- [HtmlRenderer.WinForms](https://github.com/ArthurHub/HTML-Renderer.git)
+- [Markdig](https://github.com/xoofx/markdig.git)
+- [Revit.Async](https://github.com/KennanChan/Revit.Async.git)
+- [Revit_All_Main_Versions_API_x64](https://www.nuget.org/packages/Revit_All_Main_Versions_API_x64)
+- [winforms-chat](https://github.com/agreentejada/winforms-chat)
 
 🌟 If you find it useful, give it a ⭐ and share feedback!
