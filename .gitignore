@@ -362,3 +362,28 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /AI/ILRepack.txt
+/DllsCombine/ILRepack.txt
+/DllsCombine/tools/ILRepack.exe
+/DllsCombine/tools/ILRepack.runtimeconfig.json
+/DllsCombine/tools/To Merge Dlls/Markdig.dll
+/DllsCombine/tools/To Merge Dlls/Microsoft.Bcl.AsyncInterfaces.dll
+/DllsCombine/tools/To Merge Dlls/Microsoft.Build.Framework.dll
+/DllsCombine/tools/To Merge Dlls/Microsoft.Build.Utilities.Core.dll
+/DllsCombine/tools/To Merge Dlls/Microsoft.Extensions.AI.Abstractions.dll
+/DllsCombine/tools/To Merge Dlls/Microsoft.VisualStudio.Setup.Configuration.Interop.dll
+/DllsCombine/tools/To Merge Dlls/Microsoft.Web.WebView2.Core.dll
+/DllsCombine/tools/To Merge Dlls/Microsoft.Web.WebView2.WinForms.dll
+/DllsCombine/tools/To Merge Dlls/Microsoft.Web.WebView2.Wpf.dll
+/DllsCombine/tools/To Merge Dlls/Newtonsoft.Json.dll
+/DllsCombine/tools/To Merge Dlls/OllamaSharp.dll
+/DllsCombine/tools/To Merge Dlls/Refs Ollama.dll
+/DllsCombine/tools/To Merge Dlls/Refs Revizto Issues Sync.dll
+/DllsCombine/tools/To Merge Dlls/System.Buffers.dll
+/DllsCombine/tools/To Merge Dlls/System.Collections.Immutable.dll
+/DllsCombine/tools/To Merge Dlls/System.IO.Pipelines.dll
+/DllsCombine/tools/To Merge Dlls/System.Memory.dll
+/DllsCombine/tools/To Merge Dlls/System.Numerics.Vectors.dll
+/DllsCombine/tools/To Merge Dlls/System.Runtime.CompilerServices.Unsafe.dll
+/DllsCombine/tools/To Merge Dlls/System.Text.Encodings.Web.dll
+/DllsCombine/tools/To Merge Dlls/System.Text.Json.dll
+/DllsCombine/tools/To Merge Dlls/System.Threading.Tasks.Extensions.dll
