@@ -11,7 +11,8 @@ text
 
 ## 🧩 Overview
 
-**Revit AI Chatbot** is an intelligent assistant that communicates with **OLLAMA** and supports **local AI models**, ensuring **data privacy and offline capability**.
+**Revit AI Chatbot** is an intelligent assistant that communicates with **Ollama** supporting **local AI models interactions**, ensuring **data privacy, and offline capability**.
+This allows you to experiment freely what can be done with AI in Revit. However, if you run the AI models locally, you will be limited with your GPU capabilities.
 
 > ⚙️ Built for Revit developers who want to interact with BIM data conversationally without compromising confidentiality.
 
