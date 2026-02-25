@@ -88,7 +88,7 @@ Build the add-in, open Revit and start chatting!
 
 From the releases section on the right, download the zip file, copy to C:\ProgramData\Autodesk\ApplicationPlugins\
 Unblock it, extract it to the folder directly.
-Then open Revit and start chatting!
+Then open Revit, Run the Add-In, select ollama.exe location, select a local model, if no local model is available just write the model name in the AI Model combo box to download it (from https://ollama.com/search e.g., **gpt-oss:20b**). Then Start chatting!
 
 ## 🗺️ Roadmap
 - More testing on different use-cases
@@ -100,6 +100,8 @@ Then open Revit and start chatting!
 - Handle Delete/ctrl+c/ctrl+v keys presses resulting in losing focus to Revit (Modeless form)
 - Allow for different system prompts to be saved and utilized
 - Test and enable attachements processing for multimodal interaction
+- Develop the status bar and the UI to make it more fluid
+- Automatic installation of Ollama if not detected
 
 ## 🤝 Contributing
 Contributions are welcome!
