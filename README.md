@@ -80,7 +80,7 @@ If an exception occurs during execution:
 git clone https://github.com/MahmoudAbdElMoneam/Revit-AI-Chatbot.git
 ```
 Then open the project in Visual Studio, restore dependencies, and build the solution.
-Load the resulting add-in into Revit and start chatting!
+Build the add-in, open Revit and start chatting!
 
 ---
 
