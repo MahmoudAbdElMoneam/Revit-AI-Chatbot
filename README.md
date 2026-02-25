@@ -78,9 +78,10 @@ If an exception occurs during execution:
 
 ```bash
 git clone https://github.com/MahmoudAbdElMoneam/AIChat.git
+```
 Then open the project in Visual Studio, restore dependencies, and build the solution.
 Load the resulting add-in into Revit and start chatting!
-```
+
 ---
 
 ## 📦 Installation for users
