@@ -90,7 +90,7 @@ From the releases section on the right, download the zip file, copy to C:\Progra
 Unblock it, extract it to the folder directly.
 Then open Revit and start chatting!
 
-🗺️ Roadmap
+## 🗺️ Roadmap
 - More testing on different use-cases
 - Enhanced context awareness after closing/reopening
 - Fine-tuned local model integration
@@ -101,14 +101,14 @@ Then open Revit and start chatting!
 - Allow for different system prompts to be saved and utilized
 - Test and enable attachements processing for multimodal interaction
 
-🤝 Contributing
+## 🤝 Contributing
 Contributions are welcome!
 Feel free to fork this repo, tweak the prompts, or suggest ideas via pull requests or issues.
 
-📜 License
+## 📜 License
 This project is released under the MIT License — use it freely.
 
-📦 Used Packages
+## 📦 Used Packages
 - [HtmlRenderer.WinForms](https://github.com/ArthurHub/HTML-Renderer.git)
 - [Markdig](https://github.com/xoofx/markdig.git)
 - [Revit.Async](https://github.com/KennanChan/Revit.Async.git)
