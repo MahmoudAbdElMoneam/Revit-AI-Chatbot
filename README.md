@@ -106,9 +106,13 @@ Contributions are welcome!
 Feel free to fork this repo, tweak the prompts, or suggest ideas via pull requests or issues.
 
 📜 License
-This project is released under the MIT License — use it freely.
+- This project is released under the MIT License — use it freely.
 
 📦 Used Packages
-- [HtmlRenderer.WinForms](https://github.com/ArthurHub/HTML-Renderer/blob/master/Source/HtmlRenderer.WinForms/HtmlRender.cs)
+- [HtmlRenderer.WinForms](https://github.com/ArthurHub/HTML-Renderer.git)
+- [Markdig](https://github.com/xoofx/markdig.git)
+- [Revit.Async](https://github.com/KennanChan/Revit.Async.git)
+- [Revit_All_Main_Versions_API_x64](https://www.nuget.org/packages/Revit_All_Main_Versions_API_x64)
+- [winforms-chat](https://github.com/agreentejada/winforms-chat)
 
 🌟 If you find it useful, give it a ⭐ and share feedback!
