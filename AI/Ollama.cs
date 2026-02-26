@@ -266,7 +266,7 @@ namespace AIChat
                 {
                     //Use Dispatcher.InvokeAsync for non - blocking UI updates
 
-                    IAsyncEnumerable<string> responseTask = chat.SendAsync(prompt);
+                    var responseTask = chat.SendAsync(prompt);
                     // Iterate over the stream and append to UI
                     await foreach (string answerToken in responseTask)
                     {

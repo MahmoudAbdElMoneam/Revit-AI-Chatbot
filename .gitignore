@@ -361,13 +361,10 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/.gitattributes
-/.gitignore
-/.gitignore
-/Resources/OllamaRefs.dll
+/AI/ILRepack.txt
 /DllsCombine/ILRepack.txt
-/DllsCombine/tools/ILRepack.runtimeconfig.json
 /DllsCombine/tools/ILRepack.exe
+/DllsCombine/tools/ILRepack.runtimeconfig.json
 /DllsCombine/tools/To Merge Dlls/Markdig.dll
 /DllsCombine/tools/To Merge Dlls/Microsoft.Bcl.AsyncInterfaces.dll
 /DllsCombine/tools/To Merge Dlls/Microsoft.Build.Framework.dll
@@ -390,4 +387,3 @@ FodyWeavers.xsd
 /DllsCombine/tools/To Merge Dlls/System.Text.Encodings.Web.dll
 /DllsCombine/tools/To Merge Dlls/System.Text.Json.dll
 /DllsCombine/tools/To Merge Dlls/System.Threading.Tasks.Extensions.dll
-/AI/ILRepack.txt
