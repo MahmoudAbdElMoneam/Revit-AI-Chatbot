@@ -179,6 +179,7 @@ namespace AIChat
             this.cbAIModels.TabIndex = 3;
             this.cbAIModels.SelectedIndexChanged += new System.EventHandler(this.cbAIModels_SelectedIndexChanged_1);
             this.cbAIModels.Enter += new System.EventHandler(this.tb_Enter);
+            this.cbAIModels.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cbAIModels_KeyDown);
             this.cbAIModels.Leave += new System.EventHandler(this.tb_Leave);
             // 
             // cbRetrieveAndReAsk

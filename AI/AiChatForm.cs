@@ -560,5 +560,24 @@ namespace AIChat
                     el.Pinned = false;
             }
         }
+
+        private async void cbAIModels_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true; // Prevents "ding" sound
+                e.Handled = true; // Prevents further processing of the key event
+                try
+                {
+                    string modelName = (sender as System.Windows.Forms.ComboBox).Text;
+                    await Ollama.OllamaPullModel(modelName);
+                    await startOllama();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error pulling model: " + ex.Message);
+                }
+            }
+        }
     }
 }

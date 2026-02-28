@@ -142,7 +142,7 @@ namespace AIChat
                 ollama.Config.Model = selectedAIModel;
             return availableModels;
         }
-        private static async Task OllamaPullModel(string modelName)
+        public static async Task OllamaPullModel(string modelName)
         {
             await foreach (var status in ollama.PullModelAsync(modelName))
             {
