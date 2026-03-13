@@ -5,6 +5,7 @@ using DocumentFormat.OpenXml.Spreadsheet;
 using Markdig;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.Extensions.AI;
 using Newtonsoft.Json;
 using Revit.Async;
 
@@ -273,7 +274,7 @@ namespace AIChat.AI
         {
             Executor = executor;
         }
-
+        private int retries = 0;
         public void Execute(UIApplication app)
         {
 
@@ -291,7 +292,16 @@ namespace AIChat.AI
                 RevitTask.RunAsync(
                 async (uiApp) =>
                 {
-                    await Ollama.ShowAssistantText($"Running C# Code failed, adjust system prompt or your prompt to handle/solve it:\n{job.LastError}", chatBox);
+
+                    if (retries > 5)
+                    {
+                        await Ollama.ShowAssistantText($"Running C# Code failed, adjust system prompt or your prompt to handle/solve it:\n{job.LastError}", chatBox);
+                    }
+                    else
+                    {
+                        await Ollama.GetAIResponse(job.LastError, chatBox);
+                        retries++;
+                    }
                 });
                 job.CodeToRun = null;
                 return;

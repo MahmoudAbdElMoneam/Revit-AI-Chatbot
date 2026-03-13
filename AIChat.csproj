@@ -229,6 +229,8 @@
 		<Compile Include="AI\ChatForm\ChatPanel.Functions.cs" />
 		<Compile Include="AI\AiChatForm.cs" />
 		<Compile Include="AI\AiChatForm.Designer.cs" />
+		<Compile Include="AI\DockablePane\MainPage.xaml.cs" />
+		<Compile Include="AI\DockablePane\PaneHostControl.cs" />
 		<Compile Include="AI\Ollama.cs" />
 		<Compile Include="AI\RevitCodeExecutor.cs" />
 		<Compile Include="Properties\Resources.Designer.cs">
@@ -242,6 +244,8 @@
 		<PackageReference Include="DocumentFormat.OpenXml" Version="3.4.1" />
 		<PackageReference Include="DocumentFormat.OpenXml.Framework" Version="3.4.1" />
 		<PackageReference Include="HtmlRenderer.WinForms" Version="1.5.2" />
+		<PackageReference Include="LLamaSharp" Version="0.26.0" />
+		<PackageReference Include="LLamaSharp.Backend.Cuda12" Version="0.26.0" />
 		<PackageReference Include="Markdig" Version="0.44.0" />
 		<PackageReference Include="Markdown.ColorCode" Version="3.0.1" />
 		<PackageReference Include="Revit.Async" Version="2.1.1" />
