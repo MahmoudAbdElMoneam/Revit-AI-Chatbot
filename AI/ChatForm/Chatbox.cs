@@ -1,8 +1,8 @@
-﻿using Autodesk.Revit.UI;
+﻿using AIChat.AI;
+using Autodesk.Revit.UI;
 using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
 using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using OllamaSharp.Models.Chat;
-using AIChat.AI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Forms;
@@ -95,6 +96,8 @@ namespace AIChat
         //Cross-tested this with the Twilio API and the RingCentral API, and async messaging is the way to go.
         async void SendMessage(object sender, EventArgs e)
         {
+            sendButton.Click += SendButton_Click;
+            sendButton.Text = "Stop";
             if (string.IsNullOrEmpty(aiForm.tbOllamaPath.Text))
             {
                 await Ollama.ShowAssistantText("Ollama.exe path not found, make sure downloaded ollama path is in the Ollama path text box.", this);
@@ -179,7 +182,19 @@ namespace AIChat
                 };
                 await AddMessage(textModel);
             }
+            sendButton.Click -= SendButton_Click;
+            sendButton.Text = "Send";
         }
+
+        private void SendButton_Click(object sender, EventArgs e)
+        {
+            sendButton.Click -= SendButton_Click;
+            //CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+            //CancellationToken token = cancellationTokenSource.Token;
+            //cancellationTokenSource.Cancel();
+            //Ollama.cancellationToken.cance
+        }
+
         private async Task SendPrompt(string prompt, Chatbox chatBox)
         {
             //Ineract with Revit if the checkbox is checked.

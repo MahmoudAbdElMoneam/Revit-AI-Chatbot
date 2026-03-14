@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Forms;
@@ -197,8 +198,9 @@ namespace AIChat
         }
 
         public static List<OllamaSharp.Models.Chat.Message> previousMessages = new List<OllamaSharp.Models.Chat.Message>();
+        public static CancellationToken cancellationToken = new CancellationToken();
         public static async Task<string> GetAIResponse(string prompt, Chatbox chatBox, bool updateUI = true)
-        {
+        {            
             form.canClose = false;
             form.UpdateStatus("Responding...", 0);
 
@@ -266,7 +268,7 @@ namespace AIChat
                 {
                     //Use Dispatcher.InvokeAsync for non - blocking UI updates
 
-                    var responseTask = chat.SendAsync(prompt);
+                    var responseTask = chat.SendAsync(prompt, cancellationToken);
                     // Iterate over the stream and append to UI
                     await foreach (string answerToken in responseTask)
                     {
